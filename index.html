@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Things to Take List</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Things to Take</h1>
+        <ul id="item-list">
+            <li>Water Bottle <button onclick="removeItem(this)">❌</button></li>
+            <li>Sunscreen <button onclick="removeItem(this)">❌</button></li>
+            <li>Snacks <button onclick="removeItem(this)">❌</button></li>
+        </ul>
+        <div class="input-container">
+            <input type="text" id="new-item" placeholder="Add an item">
+            <button onclick="addItem()">Add</button>
+        </div>
+    </div>
+    <script>
+        function addItem() {
+            let input = document.getElementById("new-item");
+            let itemText = input.value.trim();
+            if (itemText !== "") {
+                let li = document.createElement("li");
+                li.innerHTML = `${itemText} <button onclick="removeItem(this)">❌</button>`;
+                document.getElementById("item-list").appendChild(li);
+                input.value = "";
+            }
+        }
+        function removeItem(button) {
+            button.parentElement.remove();
+        }
+    </script>
+</body>
+</html>
