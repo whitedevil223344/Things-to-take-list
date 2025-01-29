@@ -9,17 +9,15 @@
 <body>
     <div class="container">
         <h1>Things to Take</h1>
-        <ul id="item-list">
-            <li>Water Bottle <button onclick="removeItem(this)">❌</button></li>
-            <li>Sunscreen <button onclick="removeItem(this)">❌</button></li>
-            <li>Snacks <button onclick="removeItem(this)">❌</button></li>
-        </ul>
+        <ul id="item-list"></ul>
         <div class="input-container">
             <input type="text" id="new-item" placeholder="Add an item">
             <button onclick="addItem()">Add</button>
         </div>
     </div>
     <script>
+        document.addEventListener("DOMContentLoaded", loadItems);
+
         function addItem() {
             let input = document.getElementById("new-item");
             let itemText = input.value.trim();
@@ -27,11 +25,33 @@
                 let li = document.createElement("li");
                 li.innerHTML = `${itemText} <button onclick="removeItem(this)">❌</button>`;
                 document.getElementById("item-list").appendChild(li);
+                saveItems();
                 input.value = "";
             }
         }
+
         function removeItem(button) {
             button.parentElement.remove();
+            saveItems();
+        }
+
+        function saveItems() {
+            let items = [];
+            document.querySelectorAll("#item-list li").forEach(li => {
+                items.push(li.textContent.replace("❌", "").trim());
+            });
+            localStorage.setItem("thingsToTake", JSON.stringify(items));
+        }
+
+        function loadItems() {
+            let items = JSON.parse(localStorage.getItem("thingsToTake")) || ["Water Bottle", "Sunscreen", "Snacks"];
+            let list = document.getElementById("item-list");
+            list.innerHTML = "";
+            items.forEach(item => {
+                let li = document.createElement("li");
+                li.innerHTML = `${item} <button onclick="removeItem(this)">❌</button>`;
+                list.appendChild(li);
+            });
         }
     </script>
 </body>
